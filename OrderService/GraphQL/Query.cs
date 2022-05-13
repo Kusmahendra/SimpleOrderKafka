@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HotChocolate.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using OrderService.Models;
 
 namespace OrderService.GraphQL
@@ -7,7 +8,7 @@ namespace OrderService.GraphQL
     public class Query
     {
         [Authorize(Roles = new[] {"MANAGER"})]
-        public IQueryable<Order>GetOrders([Service] SimpleOrderKafkaContext context) => context.Orders;
+        public IQueryable<Order>GetOrders([Service] SimpleOrderKafkaContext context) => context.Orders.Include(o=>o.OrderDetails);
 
 
         [Authorize]
